@@ -1,0 +1,447 @@
+/* ════════════════════════════════════════════════════════════
+   BERRACO 57 SPORT — Estilos globales
+   Identidad: amarillo + negro, estética HUD / cinemascope
+   ════════════════════════════════════════════════════════════ */
+
+/* ---------- Variables de marca ---------- */
+:root {
+  /* Amarillos */
+  --amarillo: #FBC01D;
+  --amarillo-profundo: #E5A800;
+  --amarillo-suave: #FFD955;
+  --amarillo-base: #C99400;
+
+  /* Negros */
+  --negro: #0A0A0A;
+  --negro-tinta: #111111;
+
+  /* Acento Colombia (solo camiseta destacada) */
+  --col-rojo: #CE1126;
+  --col-azul: #003893;
+
+  /* Medidas */
+  --max-ancho: 420px;
+  --max-ancho-desktop: 480px;
+  --barra-altura: 6vh;
+  --radio-cta: 8px;
+}
+
+/* ---------- Reset básico ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden; /* scroll mínimo: todo cabe en pantalla */
+}
+
+body {
+  font-family: 'Oswald', sans-serif;
+  color: var(--negro);
+  /* Fondo: gradiente radial amarillo */
+  background: radial-gradient(
+    ellipse at 50% 35%,
+    var(--amarillo-suave) 0%,
+    var(--amarillo) 38%,
+    var(--amarillo-profundo) 72%,
+    var(--amarillo-base) 100%
+  );
+  position: relative;
+}
+
+/* ---------- Capa de textura: grano sutil ---------- */
+.fondo-textura {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Grano: pequeños radial gradients negros muy tenues */
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 6px 6px, 9px 9px;
+  background-position: 0 0, 3px 4px;
+}
+
+/* ---------- Capa de líneas diagonales decorativas ---------- */
+.fondo-diagonales {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.04) 0px,
+    rgba(0, 0, 0, 0.04) 1px,
+    transparent 1px,
+    transparent 11px
+  );
+}
+
+/* ════════════════════════════════════════════════════════════
+   Esquinas decorativas estilo HUD / cámara
+   ════════════════════════════════════════════════════════════ */
+.esquina {
+  position: fixed;
+  width: 34px;
+  height: 34px;
+  border: 2.5px solid var(--negro);
+  z-index: 5;
+  opacity: 0;
+  animation: fade-in-esquina 0.8s ease forwards;
+  animation-delay: 0.2s;
+}
+.esquina.tl { top: calc(var(--barra-altura) + 10px); left: 12px; border-right: none; border-bottom: none; }
+.esquina.tr { top: calc(var(--barra-altura) + 10px); right: 12px; border-left: none; border-bottom: none; }
+.esquina.bl { bottom: calc(var(--barra-altura) + 10px); left: 12px; border-right: none; border-top: none; }
+.esquina.br { bottom: calc(var(--barra-altura) + 10px); right: 12px; border-left: none; border-top: none; }
+
+@keyframes fade-in-esquina {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Barras cinemascope (superior e inferior)
+   ════════════════════════════════════════════════════════════ */
+.barra-cine {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: var(--barra-altura);
+  min-height: 36px;
+  background: var(--negro);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  z-index: 20;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--amarillo);
+  text-transform: uppercase;
+}
+.barra-cine.superior { top: 0; }
+.barra-cine.inferior { bottom: 0; }
+
+.barra-cine .lado { display: flex; align-items: center; gap: 8px; }
+
+/* Punto rojo parpadeante (REC) */
+.punto-rec {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--col-rojo);
+  box-shadow: 0 0 6px var(--col-rojo);
+  animation: parpadeo 1.1s steps(1, end) infinite;
+}
+@keyframes parpadeo {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0.2; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Contenedor principal
+   ════════════════════════════════════════════════════════════ */
+.escenario {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--barra-altura) + 14px) 20px;
+  gap: 0;
+}
+
+.contenedor {
+  width: 100%;
+  max-width: var(--max-ancho);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   Logo BERRACO 57
+   ════════════════════════════════════════════════════════════ */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  /* Animación de entrada: blur + scale */
+  opacity: 0;
+  transform: scale(0.6);
+  filter: blur(10px);
+  animation: entrada-logo 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes entrada-logo {
+  to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+.logo-fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Cuadrado negro con el 57 */
+.logo-cuadro {
+  width: 64px;
+  height: 64px;
+  background: var(--negro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+.logo-cuadro span {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 32px;
+  color: var(--amarillo);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Separador: línea negra delgada */
+.logo-separador {
+  width: 2px;
+  height: 56px;
+  background: var(--negro);
+}
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.logo-texto .berraco {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 30px;
+  color: var(--negro);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+.logo-texto .sport {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  color: var(--negro);
+  letter-spacing: 0.8em;
+  padding-left: 0.4em; /* compensa el tracking para alinear */
+  margin-top: 2px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   Badge countdown encima del CTA
+   ════════════════════════════════════════════════════════════ */
+.badge-mundial {
+  background: var(--negro);
+  color: var(--amarillo);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  padding: 7px 16px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge-mundial .num {
+  color: var(--amarillo-suave);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+}
+
+/* ════════════════════════════════════════════════════════════
+   CTA principal (camiseta Colombia)
+   ════════════════════════════════════════════════════════════ */
+.bloque-cta {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.cta-principal {
+  width: 100%;
+  min-height: 64px;
+  background: var(--col-rojo);
+  border: 2.5px solid var(--amarillo);
+  border-radius: var(--radio-cta);
+  color: #ffffff;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Pulso dorado cada 3s */
+  animation: pulso-cta 3s ease-in-out infinite;
+}
+.cta-principal:hover {
+  transform: scale(1.03);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
+}
+@keyframes pulso-cta {
+  0%   { box-shadow: 0 0 0 0 rgba(251, 192, 29, 0.55); }
+  60%  { box-shadow: 0 0 0 16px rgba(251, 192, 29, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(251, 192, 29, 0); }
+}
+
+.cta-sub {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--negro);
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+.cta-sub strong {
+  font-weight: 700;
+  color: var(--negro-tinta);
+}
+
+/* ════════════════════════════════════════════════════════════
+   Botones secundarios
+   ════════════════════════════════════════════════════════════ */
+.lista-botones {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.boton-sec {
+  width: 100%;
+  min-height: 56px;
+  background: var(--negro);
+  border: 1.5px solid rgba(251, 192, 29, 0.45);
+  border-radius: 6px;
+  color: var(--amarillo);
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: grid;
+  grid-template-columns: 28px 1fr 28px;
+  align-items: center;
+  padding: 0 18px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.boton-sec .icono { font-size: 18px; text-align: left; }
+.boton-sec .etiqueta { text-align: center; white-space: nowrap; }
+.boton-sec .flecha {
+  text-align: right;
+  font-weight: 700;
+  transition: transform 0.3s ease;
+}
+.boton-sec:hover {
+  background: var(--amarillo);
+  color: var(--negro);
+  border-color: var(--negro);
+}
+.boton-sec:hover .flecha { transform: translateX(6px); }
+
+/* ════════════════════════════════════════════════════════════
+   Sección inferior (créditos)
+   ════════════════════════════════════════════════════════════ */
+.creditos {
+  margin-top: 6px;
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--negro);
+  text-transform: uppercase;
+  line-height: 1.8;
+  opacity: 0.85;
+}
+
+/* ════════════════════════════════════════════════════════════
+   Partículas negras flotantes (decorativas)
+   ════════════════════════════════════════════════════════════ */
+.particula {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.55);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  animation: pop-particula 6s ease-in-out infinite;
+}
+@keyframes pop-particula {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50%      { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Animación de entrada en cascada
+   ════════════════════════════════════════════════════════════ */
+.aparece {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: aparece-arriba 0.6s ease forwards;
+}
+@keyframes aparece-arriba {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Responsive
+   ════════════════════════════════════════════════════════════ */
+@media (min-width: 600px) {
+  .contenedor { max-width: var(--max-ancho-desktop); }
+}
+
+/* Pantallas muy bajas: reduce un poco para evitar scroll */
+@media (max-height: 720px) {
+  .logo-cuadro { width: 56px; height: 56px; }
+  .logo-cuadro span { font-size: 28px; }
+  .logo-texto .berraco { font-size: 26px; }
+  .contenedor { gap: 11px; }
+  .cta-principal { min-height: 58px; font-size: 16px; }
+  .boton-sec { min-height: 50px; }
+}
+
+/* Respeta usuarios que prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .logo, .aparece { opacity: 1; transform: none; filter: none; }
+}
